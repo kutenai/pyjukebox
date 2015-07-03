@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>PyJukebox</title>
+  <link rel="stylesheet/less" type="text/css" href="static/less/styles.less" />
+</head>
+
+<body>
+  <div class="wrapper">
+    {% block navbar %}
+        <nav class="navbar navbar-default navbar-fixed-top">
+          <div class="container">
+            <ul>
+              <li><a href="">Now Playing</a></li>
+              <li><a href="">Songs</a></li>
+              <li><a href="">Albums</a></li>
+              <li><a href="">Artists</a></li>
+              <li><a href="">Genre</a></li>
+              <li><a href="">Play History</li></li>
+            </ul>
+          </div>
+        </nav>
+    {% endblock %}
+
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+  </div>
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.5.1/less.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/static/js/jukebox.js"></script>
+
+
+</body>
+
+</html></html>

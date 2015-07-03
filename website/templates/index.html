@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row search">
+      Search
+      <input placeholder="Search Terms"></input>
+
+    </div>
+
+    <div class="row queue">
+      Songs
+      <ul id="queue">
+        <li><a href="" playlink="{{song1}}" onclick="play_song(this)">Song1</a></li>
+        <li><a href="" playlink="{{song2}}" onclick="play_song(this)">Song2</a></li>
+      </ul>
+    </div>
+  </div>
+{% endblock %}
