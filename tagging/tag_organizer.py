@@ -15,6 +15,7 @@ from music_organizer import MusicOrganizer
 #root = '/Users/kutenai/proj/bondiproj/pyjukebox/MajorTunage'
 
 music_extensions = ['.mp3', '.m4a']
+from time_track import TimeTrack
 
 
 def showid(type, id):
@@ -50,23 +51,26 @@ def main():
     visitor = Visitor(args.extensions)
 
     if args.freezefile and exists(args.freezefile):
-        visitor.thaw(args.freezefile)
+        with TimeTrack("Un freezing data.") as t:
+            visitor.thaw(args.freezefile)
     else:
-        visitor.find_files(args.srcroot)
+        with TimeTrack("Indexing and tagging files.") as track:
+            visitor.find_files(args.srcroot)
 
-        print("Found a total of {} {} files.".format(visitor.count, visitor.type))
+            print("Found a total of {} {} files.".format(visitor.count, visitor.type))
 
-        if args.logfile:
-            with open(args.logfile, 'w') as fp:
-                visitor.tagall(logfp=fp)
-        else:
-            visitor.tagall()
+            if args.logfile:
+                with open(args.logfile, 'w') as fp:
+                    visitor.tagall(logfp=fp)
+            else:
+                visitor.tagall()
 
-        if args.freezefile:
-            visitor.freeze(args.freezefile)
+            if args.freezefile:
+                visitor.freeze(args.freezefile)
 
     organizer = MusicOrganizer(visitor)
-    organizer.organize_all(args.srcroot, args.destroot)
+    with TimeTrack("Organizing music.") as t:
+        organizer.organize_all(args.srcroot, args.destroot)
 
 
 

@@ -9,22 +9,6 @@ from sqlalchemy.engine import reflection
 from sqlalchemy.ext.declarative import declarative_base
 
 from os.path import relpath, join
-import time
-
-class Timer:
-
-    def __init__(self, start_msg="Starting."):
-        self.msg = start_msg
-    def __enter__(self):
-        print(self.msg)
-        self.start = time.clock()
-        return self
-
-    def __exit__(self, *args):
-        self.end = time.clock()
-        self.interval = self.end - self.start
-        print('Done in {}'.format(self.interval))
-
 def main():
 
     engine = create_engine("postgresql+psycopg2://postgres:iD9aD5tIv7Jov0@localhost:5433/archive_production_mirror")
