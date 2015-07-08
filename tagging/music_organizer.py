@@ -50,6 +50,13 @@ class MusicOrganizer(object):
         Update the files to their new calculated location.
         If their new location differs from their old location, then copy
         the file to the new location, and update the database.
+
+        Improvements:
+        For re-testing, it would be best to have a cache of all old and new paths.
+        Then, I can check the file by path, and find it quicker.
+        I might also want to create an index on the files.. that would make it
+        much faster fo fine files.
+
         :return:
         """
         total_files = len(self.visitor.byorder)
@@ -89,7 +96,7 @@ class MusicOrganizer(object):
                         print("Dest Dir:{} Dest File:{}".format(dirname(dest_path), dest_path))
 
                 counter += 1
-                if not counter % 100:
+                if counter != 0 and not counter % 100:
                     print("Re-organized {} of {} files.".format(counter, total_files))
 
 
