@@ -4,7 +4,7 @@ from __future__ import absolute_import
 
 from sqlalchemy.orm import mapper, sessionmaker
 from sqlalchemy.orm.exc import NoResultFound
-from os.path import join, dirname
+from os.path import join, dirname, exists
 from shutil import copy
 from distutils.dir_util import mkpath
 
@@ -69,11 +69,24 @@ class MusicOrganizer(object):
                         if song:
                             mkpath(dirname(dest_path))
                             copy(src_path, dest_path)
+                            with open('copy_commands.sh', 'a') as fp:
+                                print(u"cp {} {}".format(src_path, dest_path))
+                            song.previous_file = song.file
                             song.file = newpath
+                            song.uuid = file.uuid
+                        else:
+                            song = session.query(Songs).filter_by(previous_file=original_path).first()
+                            if song:
+                                newfile = join(destroot, song.file)
+                                if not exists(newfile):
+                                    # TODO: copy the file here.. it didn't get copied
+                                    pass
+
                     except NoResultFound as e:
                         print("Song {} does not exist in database.".format(file.base_filename))
                     except Exception as e:
                         print("Failed to copy the song:{} Exception:{}".format(file.base_filename, e))
+                        print("Dest Dir:{} Dest File:{}".format(dirname(dest_path), dest_path))
 
                 counter += 1
                 if not counter % 100:

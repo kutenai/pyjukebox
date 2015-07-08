@@ -136,13 +136,14 @@ class MusicFile(object):
         :return:
         """
 
-        UUID = self.uuid or uuid.uuid4()
+        if not self.uuid:
+            self.uuid = uuid.uuid4()
 
         filename = "{artist}/{album}/{title}-uuid-{uuid}.{type}".format(
             artist=slugify(self.artist),
             album=slugify(self.album),
             title=slugify(self.title),
-            uuid=UUID,
+            uuid=self.uuid,
             type=self.type
         )
         return filename
