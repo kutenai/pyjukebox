@@ -67,9 +67,9 @@ class MusicOrganizer(object):
                     try:
                         song = session.query(Songs).filter_by(file=original_path).first()
                         if song:
-                            song.file = newpath
                             mkpath(dirname(dest_path))
                             copy(src_path, dest_path)
+                            song.file = newpath
                     except NoResultFound as e:
                         print("Song {} does not exist in database.".format(file.base_filename))
                     except Exception as e:

@@ -10,6 +10,7 @@ EasyMP4.RegisterTextKey('airplayid', 'apID')
 from os.path import join, splitext, basename
 import re
 import uuid
+from slugify import slugify
 
 class MusicFile(object):
     """
@@ -37,7 +38,7 @@ class MusicFile(object):
         root, ext = splitext(base)
         self.filetype = ext[1:]
 
-        self.uuid = self._extract_uuid(root)
+        self.filename_title, self.uuid = self._extract_uuid(root)
 
         self.tags = {}
 
@@ -57,15 +58,17 @@ class MusicFile(object):
 
         <filename>-uuid-<uuid>
 
-        Extract the UUID portion and return that, otherwise, return None
+        Extract the UUID portion.
+        Return the filename portion, and the UUID as a tuple.
+        If there is no UUID, return None for that.
         :param root:
         :return:
         """
-        m = re.search('uuid-([A-Za-z0-9-])$', root)
+        m = re.search('^(.*)-?uuid-([A-Za-z0-9-])$', root)
         if m:
-            return m.group(1)
+            return m.group(1), m.group(2)
 
-        return None
+        return root, None
 
     @property
     def name(self):
@@ -83,7 +86,10 @@ class MusicFile(object):
         Return artist name, or Unknown
         :return:
         """
-        return self.tags.get('artist', ['Unknown'])[0]
+        artist = self.tags.get('artist', ['Unknown'])[0]
+        if artist == '':
+            artist = 'Unknown'
+        return artist
 
     @property
     def album(self):
@@ -91,15 +97,19 @@ class MusicFile(object):
         Return album name, or Unknown
         :return:
         """
-        return self.tags.get('album', ['Unknown'])[0]
+        album = self.tags.get('album', ['Unknown'])[0]
+        if album == '':
+            album = 'Unknown'
+        return album
 
     @property
     def title(self):
         """
-        Get the title from the tags, or use the filename as the title if not found.
+        Get the title from the tags, or use the title portion of the filename as the
+        default.
         :return:
         """
-        return self.tags.get('title', splitext(basename(self.filename)))[0]
+        return self.tags.get('title', [self.filename_title])[0]
 
     @property
     def type(self):
@@ -111,7 +121,8 @@ class MusicFile(object):
         :param s:
         :return:
         """
-        return re.sub(r'[^\w\d .-_]', '', s)
+        #return re.sub(r'[^\w\d .-_]', '', s)
+        return slugify(s)
 
     def calc_ideal_path(self):
         """
@@ -128,9 +139,9 @@ class MusicFile(object):
         UUID = self.uuid or uuid.uuid4()
 
         filename = "{artist}/{album}/{title}-uuid-{uuid}.{type}".format(
-            artist=self.clean_strings(self.artist),
-            album=self.clean_strings(self.album),
-            title=self.clean_strings(self.title),
+            artist=slugify(self.artist),
+            album=slugify(self.album),
+            title=slugify(self.title),
             uuid=UUID,
             type=self.type
         )
@@ -157,6 +168,13 @@ class MusicFile(object):
             print("Did not parse:{}".format(fullfile))
         except Exception as e:
             print("Some unknown reason we failed: {}.".format(e))
+
+    def hash_song(self):
+        """
+        Remvoe all tags, save to a temporary file, then hash that file.
+        :return:
+        """
+        return 0
 
     def showtags(self, tags):
         """

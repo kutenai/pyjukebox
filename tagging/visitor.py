@@ -118,6 +118,21 @@ class Visitor(object):
             if not num_tagged% 100:
                 print("Tagged {} of {}".format(num_tagged, num_to_tag))
 
+    def hashall(self, logfp=None):
+        """
+        Calculate a 'tagless' hash of all of the files.
+        :return:
+        """
+        allfiles = self.data['byorder']
+
+        num_to_hash = len(allfiles)
+        num_hashed = 0
+        for file in allfiles:
+            hash = file.hash()
+            num_hashed += 1
+            if not num_hashed% 100:
+                print("Tagged {} of {}".format(num_hashed, num_to_hash))
+
     def freeze(self, freezefile):
         """
         Save a freeze file for all data for this type of file.
