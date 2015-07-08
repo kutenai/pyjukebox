@@ -76,7 +76,7 @@ class MusicOrganizer(object):
                         print("Failed to copy the song:{} Exception:{}".format(file.base_filename, e))
 
                 counter += 1
-                if counter% 100:
+                if not counter % 100:
                     print("Re-organized {} of {} files.".format(counter, total_files))
 
 

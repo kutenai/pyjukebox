@@ -39,8 +39,7 @@ class MusicFile(object):
 
         self.uuid = self._extract_uuid(root)
 
-
-        self.tags = None
+        self.tags = {}
 
     def __str__(self):
         s = self.filename
@@ -144,7 +143,7 @@ class MusicFile(object):
         """
 
         fullfile = join(self.root,self.filename)
-        ext = splitext(self.filename)[1]
+        ext = splitext(self.filename)[1].lower()
 
         try:
             tagger = self.taggers.get(ext)
