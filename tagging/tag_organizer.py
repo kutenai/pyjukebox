@@ -42,7 +42,7 @@ def main():
     parser.add_argument('--freezefile',
                         help='Freeze the data from the initial read to this file.')
 
-    parser.add_argument('--log',
+    parser.add_argument('--logfile',
                         help='Log for tag logging data.')
 
     args = parser.parse_args()
@@ -63,7 +63,7 @@ def main():
             visitor.tagall()
 
         if args.freezefile:
-            visitor.freeze(args.freeze)
+            visitor.freeze(args.freezefile)
 
     organizer = MusicOrganizer(visitor)
     organizer.organize_all(args.srcroot, args.destroot)

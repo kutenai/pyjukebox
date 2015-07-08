@@ -52,6 +52,8 @@ class MusicOrganizer(object):
         the file to the new location, and update the database.
         :return:
         """
+        total_files = len(self.visitor.byorder)
+        counter = 0
 
         with session_scope() as session:
 
@@ -72,6 +74,10 @@ class MusicOrganizer(object):
                         print("Song {} does not exist in database.".format(file.base_filename))
                     except Exception as e:
                         print("Failed to copy the song:{} Exception:{}".format(file.base_filename, e))
+
+                counter += 1
+                if counter% 100:
+                    print("Re-organized {} of {} files.".format(counter, total_files))
 
 
 

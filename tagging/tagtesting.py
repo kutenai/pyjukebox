@@ -32,6 +32,10 @@ def main():
     parser.add_argument('--freezefile',
                         help='Freeze the data from the initial read to this file.')
 
+    parser.add_argument('--extensions', nargs='+',
+                        default=['mp3', 'm4a', 'm4p'],
+                        help="List of extensions to search for.")
+
     parser.add_argument('--logfile',
                         help='Log for tag logging data.')
 

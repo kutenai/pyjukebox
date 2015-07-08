@@ -9,6 +9,7 @@ from mutagen.mp3 import MP3, HeaderNotFoundError
 EasyMP4.RegisterTextKey('airplayid', 'apID')
 from os.path import join, splitext, basename
 import re
+import uuid
 
 class MusicFile(object):
     """
@@ -30,7 +31,15 @@ class MusicFile(object):
 
         self.root = root
         self.filename = filename
-        self.filetype = splitext(filename)[1][1:]
+
+        # Extract the UUID if it is present in the filename
+        base = basename(filename)
+        root, ext = splitext(base)
+        self.filetype = ext[1:]
+
+        self.uuid = self._extract_uuid(root)
+
+
         self.tags = None
 
     def __str__(self):
@@ -42,6 +51,22 @@ class MusicFile(object):
                 self.title
             )
         return s
+
+    def _extract_uuid(self, root):
+        """
+        UUID is tacked onto the filename using the following pattern:
+
+        <filename>-uuid-<uuid>
+
+        Extract the UUID portion and return that, otherwise, return None
+        :param root:
+        :return:
+        """
+        m = re.search('uuid-([A-Za-z0-9-])$', root)
+        if m:
+            return m.group(1)
+
+        return None
 
     @property
     def name(self):
@@ -100,11 +125,15 @@ class MusicFile(object):
 
         :return:
         """
-        filename = "{}/{}/{}.{}".format(
-            self.clean_strings(self.artist),
-            self.clean_strings(self.album),
-            self.clean_strings(self.title),
-            self.type
+
+        UUID = self.uuid or uuid.uuid4()
+
+        filename = "{artist}/{album}/{title}-uuid-{uuid}.{type}".format(
+            artist=self.clean_strings(self.artist),
+            album=self.clean_strings(self.album),
+            title=self.clean_strings(self.title),
+            uuid=UUID,
+            type=self.type
         )
         return filename
 
