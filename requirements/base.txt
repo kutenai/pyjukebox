@@ -12,6 +12,6 @@ pyelasticsearch==1.4
 pyglet==1.2.3
 simplejson==3.7.3
 six==1.9.0
-urllib3==1.10.4
+urllib3==1.26.5
 SQLAlchemy==1.0.6
 psycopg2==2.6.1
