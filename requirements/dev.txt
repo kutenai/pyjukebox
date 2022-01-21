@@ -2,7 +2,7 @@ backports.ssl-match-hostname==3.4.0.2
 certifi==2015.4.28
 functools32==3.2.3.post1
 gnureadline==6.3.3
-ipython==3.2.0
+ipython==7.16.3
 jsonschema==2.5.1
 mistune==0.6
 ptyprocess==0.5
