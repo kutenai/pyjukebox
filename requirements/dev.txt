@@ -4,7 +4,7 @@ functools32==3.2.3.post1
 gnureadline==6.3.3
 ipython==3.2.0
 jsonschema==2.5.1
-mistune==0.6
+mistune==2.0.3
 ptyprocess==0.5
 Pygments==2.0.2
 pyzmq==14.7.0
