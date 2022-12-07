@@ -1,5 +1,5 @@
 backports.ssl-match-hostname==3.4.0.2
-certifi==2015.4.28
+certifi==2022.12.7
 functools32==3.2.3.post1
 gnureadline==6.3.3
 ipython==3.2.0
